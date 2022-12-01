@@ -1,0 +1,19 @@
+metricbeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+name: javalin-metrics-shipper
+
+output.elasticsearch:
+  hosts: ["localhost:9200"]
+  protocol: "https"
+
+  # Authentication credentials - either API key or username/password.
+  api_key: "xZ5uyIQBVVocAV-RwzpW:Szm88RvESbm88Bmk0SYFGQ"
+  ssl.certificate_authorities: ["/Users/liuxg/elastic/elasticsearch-8.5.2/config/certs/http_ca.crt"]
+
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~

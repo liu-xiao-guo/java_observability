@@ -1,0 +1,36 @@
+name: heartbeat-shipper
+
+output.elasticsearch:
+  hosts: ["localhost:9200"]
+  protocol: "https"
+
+  # Authentication credentials - either API key or username/password.
+  api_key: "xZ5uyIQBVVocAV-RwzpW:Szm88RvESbm88Bmk0SYFGQ"
+  ssl.certificate_authorities: ["/Users/liuxg/elastic/elasticsearch-8.5.2/config/certs/http_ca.crt"]
+
+heartbeat.monitors:
+  - type: http
+    id: javalin-http-app
+    name: "Javalin Web Application"
+    urls: ["http://localhost:8000"]
+    check.response.status: [200]
+    schedule: '@every 15s'
+
+  - type: http
+    id: httpbin-get
+    name: "httpbin GET"
+    urls: ["https://httpbin.org/get"]
+    check.response.status: [200]
+    schedule: '@every 15s'
+
+  - type: tcp
+    id: javalin-tcp
+    name: "TCP Port 8000"
+    hosts: ["localhost:8000"]
+    schedule: '@every 15s'
+
+processors:
+  - add_observer_metadata:
+      geo:
+        name: asia-beijing
+        location: "39.923423, 116.405654"
